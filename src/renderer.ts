@@ -1,6 +1,6 @@
 import chalk from 'chalk';
 import figures from 'figures';
-import { SearchResult } from './fuzzyFind';
+import { Highlight, SearchResult } from './fuzzyFind';
 
 type SearchResultKey = keyof SearchResult['highlights']
 
@@ -22,8 +22,16 @@ export function renderSearchString(value: string, cursorPos: number): string {
     return prefix + firstChunk + chalk.inverse(corsurChar) + secondChunk;
 }
 
+function getHighlightString(highlight?: Highlight): string | null {
+    if (!highlight) {
+        return null;
+    }
+    
+    return `${highlight.before}${chalk.italic.underline.yellow(highlight.hightlight)}${highlight.after}`   
+}
+
 function getStringToRender(result: SearchResult, key: SearchResultKey, padding = 0): string {
-    const valueOrHighlight = result.highlights[key] ?? result.value[key]
+    const valueOrHighlight = getHighlightString(result.highlights[key]) || result.value[key]
     
     return valueOrHighlight.padEnd(padding, ' ')
 }
