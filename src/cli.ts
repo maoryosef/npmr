@@ -4,6 +4,7 @@ import * as terminal from './utils/terminal';
 import * as renderer from './renderer';
 import * as reader from './scriptsReader';
 import { spawnSync } from 'child_process';
+import fuzzyFind from './fuzzyFind';
 
 const input = new InputHandler({ 
     stdin: process.stdin
@@ -12,13 +13,13 @@ const input = new InputHandler({
 terminal.clear();
 
 const scripts = reader.readScripts();
-
+let results = fuzzyFind(scripts, '', ['cmd', 'name'])
 let selectedIdx = 0;
 
 function render(handler: InputHandler) {
     logUpdate([
-        renderer.renderValue(handler.value, handler.cursorPos),
-        renderer.renderScripts(scripts, selectedIdx),
+        renderer.renderSearchString(handler.value, handler.cursorPos),
+        renderer.renderScripts(results, selectedIdx),
     ].join('\n')
     )
 }
@@ -43,7 +44,8 @@ input.on('change', (handler, key) => {
         case InputKey.UP: selectedIdx--; break;
     }
     
-    selectedIdx = clamp(selectedIdx, 0, scripts.length - 1);
+    results = fuzzyFind(scripts, handler.value, ['cmd', 'name']);
+    selectedIdx = clamp(selectedIdx, 0, results.length - 1);
 
     render(handler);
 })

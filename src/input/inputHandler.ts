@@ -32,7 +32,10 @@ export default class InputHandler extends TypedEmitter<InputEvents> {
       console.error(e);
     });
 
-    stdin.setRawMode(true);
+    if (process.stdin.isTTY) {
+      process.stdin.setRawMode(true);
+    }
+
     if (!isWin) {
       stdin.setEncoding('utf8');
     }

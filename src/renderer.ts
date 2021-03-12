@@ -1,9 +1,10 @@
 import chalk from 'chalk';
 import figures from 'figures';
+import { SearchResult } from './fuzzyFind';
 
-import { PackageJsonScript } from './scriptsReader';
+type SearchResultKey = keyof SearchResult['highlights']
 
-export function renderValue(value: string, cursorPos: number): string {
+export function renderSearchString(value: string, cursorPos: number): string {
     const prefix = chalk.cyan(`Search task${figures.pointer} `)
     
     if (value === '') {
@@ -21,10 +22,18 @@ export function renderValue(value: string, cursorPos: number): string {
     return prefix + firstChunk + chalk.inverse(corsurChar) + secondChunk;
 }
 
-export function renderScripts(scripts: PackageJsonScript[], selectedIdx: number): string {
+function getStringToRender(result: SearchResult, key: SearchResultKey, padding = 0): string {
+    const valueOrHighlight = result.highlights[key] ?? result.value[key]
+    
+    return valueOrHighlight.padEnd(padding, ' ')
+}
+
+export function renderScripts(scripts: SearchResult[], selectedIdx: number): string {
+    const maxScriptLength = scripts.reduce((maxLen, v) => Math.max(maxLen, v.value.name.length), -Infinity)
+    
     return scripts.map((script, idx) =>
         selectedIdx === idx ? 
-            `${figures.play} ${chalk.bold(script.name)}\t ${chalk.white(script.cmd)}` :
-            `  ${chalk.dim(script.name)}\t ${chalk.dim(script.cmd)}`
+            `${figures.play} ${chalk.bold(getStringToRender(script, 'name', maxScriptLength))}\t ${chalk.white(getStringToRender(script, 'cmd'))}` :
+            `  ${chalk.dim(getStringToRender(script, 'name', maxScriptLength))}\t ${chalk.dim(getStringToRender(script, 'cmd'))}`
     ).join('\n');
 }
