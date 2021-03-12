@@ -4,38 +4,56 @@ import { PackageJsonScript } from './scriptsReader';
 const KEYS = ['cmd', 'name']
 const HIGHLIGHT_SPLIT_CHAR = '\x00'
 export interface Highlight {
-  before: string;
-  hightlight: string;
-  after: string;
+  value: string;
+  highlighted: boolean;
 }
 export interface SearchResult {
     value: PackageJsonScript;
     score: number;
     highlights: {
-      cmd?: Highlight;
-      name?: Highlight;
+      cmd?: Highlight[];
+      name?: Highlight[];
     }
 }
 
-const packageJsinScriptToSearchResult = (value: PackageJsonScript) : SearchResult =>
+const packageJsonScriptToSearchResult = (value: PackageJsonScript) : SearchResult =>
   ({value, score: 0, highlights: {}})
 
-const toHighlight = (highlightedString: string | null) : Highlight | null => {
+const toHighlights = (highlightedString: string | null) : Highlight[] | null => {
     if (!highlightedString) {
       return null;
     }
     
-    const [before, hightlight, after] = highlightedString.split(HIGHLIGHT_SPLIT_CHAR)
+    const highlights: Highlight[] = []
+    let highlighted = false;
+    let value = ''    
     
-    return {
-      before,
-      hightlight,
-      after
+    for (const c of highlightedString) {
+      if (c === HIGHLIGHT_SPLIT_CHAR) {
+        highlights.push({
+          highlighted,
+          value
+        })
+        
+        value = ''
+        highlighted = !highlighted
+      } else {
+        value += c
+      }
     }
+    
+    if (value.length > 0) {
+      highlights.push({
+        highlighted: false,
+        value
+      })
+    }
+    
+    return highlights
 }
 
-const getHighlight = (result: Fuzzysort.Result[], idx: number): Highlight | null =>
-  toHighlight(fuzzysort.highlight(result[idx], HIGHLIGHT_SPLIT_CHAR, HIGHLIGHT_SPLIT_CHAR))
+const getHighlights = (result: Fuzzysort.Result[], idx: number): Highlight[] | null =>
+  toHighlights(fuzzysort.highlight(result[idx], HIGHLIGHT_SPLIT_CHAR, HIGHLIGHT_SPLIT_CHAR))
 
 
 const fuzzySortResultToSearchResult = (result: Fuzzysort.KeyResult<PackageJsonScript>) : SearchResult =>
@@ -43,14 +61,13 @@ const fuzzySortResultToSearchResult = (result: Fuzzysort.KeyResult<PackageJsonSc
   value: result.obj,
   score: result.score,
   highlights: KEYS.reduce((obj, key, idx) =>
-    ({ ...obj, [key]: getHighlight(result as unknown as Fuzzysort.Result[], idx) }), {}),
+    ({ ...obj, [key]: getHighlights(result as unknown as Fuzzysort.Result[], idx) }), {}),
 })
 
 const doFuzzySort = (list: Array<PackageJsonScript>, query: string): SearchResult[] =>
   fuzzysort
     .go(query, list, {
       keys: KEYS,
-      threshold: -20, // Don't return matches worse than this (higher is faster)
       limit: 16, // Don't return more results than this (lower is faster)
       allowTypo: true, // (false is faster)
     })
@@ -61,4 +78,4 @@ const doFuzzySort = (list: Array<PackageJsonScript>, query: string): SearchResul
 export default (list: Array<PackageJsonScript>, query: string = ''): SearchResult[] => 
     query.trim().length > 0 ? 
       doFuzzySort(list, query) :
-      list.map(packageJsinScriptToSearchResult)
+      list.map(packageJsonScriptToSearchResult)

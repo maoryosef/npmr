@@ -1,0 +1,9 @@
+{
+    "name": "simple-package",
+    "scripts": {
+      "build": "tsc",
+      "build:webpack": "webpack",
+      "watch": "tsc --watch"
+    }
+  }
+  

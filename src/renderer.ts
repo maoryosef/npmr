@@ -22,12 +22,12 @@ export function renderSearchString(value: string, cursorPos: number): string {
     return prefix + firstChunk + chalk.inverse(corsurChar) + secondChunk;
 }
 
-function getHighlightString(highlight?: Highlight): string | null {
+function getHighlightString(highlight?: Highlight[]): string | null {
     if (!highlight) {
         return null;
     }
     
-    return `${highlight.before}${chalk.italic.underline.yellow(highlight.hightlight)}${highlight.after}`   
+    return highlight.map(h => h.highlighted ? `${chalk.yellow(h.value)}` : h.value).join('')
 }
 
 function getStringToRender(result: SearchResult, key: SearchResultKey, padding = 0): string {

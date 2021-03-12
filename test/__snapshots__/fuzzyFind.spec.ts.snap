@@ -1,0 +1,113 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`fuzzyFind when query is empty should return all scripts 1`] = `
+Array [
+  Object {
+    "highlights": Object {},
+    "score": 0,
+    "value": Object {
+      "cmd": "tsc",
+      "name": "build",
+    },
+  },
+  Object {
+    "highlights": Object {},
+    "score": 0,
+    "value": Object {
+      "cmd": "webpack",
+      "name": "build:webpack",
+    },
+  },
+  Object {
+    "highlights": Object {},
+    "score": 0,
+    "value": Object {
+      "cmd": "tsc --watch",
+      "name": "watch",
+    },
+  },
+]
+`;
+
+exports[`fuzzyFind when query is not empty should return matching scripts for query "tsc" 1`] = `
+Array [
+  Object {
+    "highlights": Object {
+      "cmd": Array [
+        Object {
+          "highlighted": false,
+          "value": "",
+        },
+        Object {
+          "highlighted": true,
+          "value": "tsc",
+        },
+      ],
+      "name": null,
+    },
+    "score": 0,
+    "value": Object {
+      "cmd": "tsc",
+      "name": "build",
+    },
+  },
+  Object {
+    "highlights": Object {
+      "cmd": Array [
+        Object {
+          "highlighted": false,
+          "value": "",
+        },
+        Object {
+          "highlighted": true,
+          "value": "tsc",
+        },
+        Object {
+          "highlighted": false,
+          "value": " --watch",
+        },
+      ],
+      "name": null,
+    },
+    "score": -8,
+    "value": Object {
+      "cmd": "tsc --watch",
+      "name": "watch",
+    },
+  },
+]
+`;
+
+exports[`fuzzyFind when query is not empty should return matching scripts for query "webpack" 1`] = `
+Array [
+  Object {
+    "highlights": Object {
+      "cmd": Array [
+        Object {
+          "highlighted": false,
+          "value": "",
+        },
+        Object {
+          "highlighted": true,
+          "value": "webpack",
+        },
+      ],
+      "name": Array [
+        Object {
+          "highlighted": false,
+          "value": "build:",
+        },
+        Object {
+          "highlighted": true,
+          "value": "webpack",
+        },
+      ],
+    },
+    "score": 0,
+    "value": Object {
+      "cmd": "webpack",
+      "name": "build:webpack",
+    },
+  },
+]
+`;

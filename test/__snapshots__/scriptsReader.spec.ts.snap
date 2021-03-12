@@ -1,0 +1,20 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`scriptsReader should read the scripts of "emptyPackage" 1`] = `Array []`;
+
+exports[`scriptsReader should read the scripts of "simplePackage" 1`] = `
+Array [
+  Object {
+    "cmd": "tsc",
+    "name": "build",
+  },
+  Object {
+    "cmd": "webpack",
+    "name": "build:webpack",
+  },
+  Object {
+    "cmd": "tsc --watch",
+    "name": "watch",
+  },
+]
+`;

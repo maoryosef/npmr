@@ -1,15 +1,19 @@
 import { join } from 'path';
 import { cwd } from 'process';
-import { readFileSync } from 'fs';
+import { readFileSync, existsSync } from 'fs';
 
 interface PackageJson {
     scripts: Record<string, string>;
 }
 
-function readPackageJson(): PackageJson {
+function readPackageJson(): PackageJson | null{
     const fileName = join(cwd(), 'package.json');
     
-    return JSON.parse(readFileSync(fileName, 'utf-8'));
+    if (existsSync(fileName)) {
+        return JSON.parse(readFileSync(fileName, 'utf-8'));
+    }
+    
+    return null;
 }
 
 export interface PackageJsonScript {
@@ -18,5 +22,5 @@ export interface PackageJsonScript {
 }
 
 export const readScripts = (): PackageJsonScript[] =>
-    Object.entries(readPackageJson().scripts)
+    Object.entries(readPackageJson()?.scripts || {})
         .reduce<PackageJsonScript[]>((acc, [name, cmd]) => [...acc, { name, cmd }], [])
