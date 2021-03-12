@@ -71,11 +71,12 @@ const doFuzzySort = (list: Array<PackageJsonScript>, query: string): SearchResul
       limit: 16, // Don't return more results than this (lower is faster)
       allowTypo: true, // (false is faster)
     })
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     .sort((a, b) => a.score < b.score)
     .map(fuzzySortResultToSearchResult)
 
-export default (list: Array<PackageJsonScript>, query: string = ''): SearchResult[] => 
+export default (list: Array<PackageJsonScript>, query = ''): SearchResult[] => 
     query.trim().length > 0 ? 
       doFuzzySort(list, query) :
       list.map(packageJsonScriptToSearchResult)

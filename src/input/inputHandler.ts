@@ -43,7 +43,7 @@ export default class InputHandler extends TypedEmitter<InputEvents> {
     stdin.on('data', this.onKeyPress.bind(this));
   }
 
-  get value() {
+  get value(): string {
     return this._value.join('');
   }
 
@@ -123,7 +123,7 @@ export default class InputHandler extends TypedEmitter<InputEvents> {
     }
   }
   
-  insertChar(char: string | Buffer) {
+  insertChar(char: string | Buffer): void {
     this._value.splice(this.cursorPos, 0, char);
     this.cursorPos++;
   }
