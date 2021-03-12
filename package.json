@@ -4,6 +4,7 @@
   "description": "",
   "main": "build/cli.js",
   "bin": "bin/npmr.js",
+  "private": false,
   "scripts": {
     "start": "ts-node src/cli.ts",
     "build": "tsc",
