@@ -3,11 +3,12 @@ import { cwd } from 'process';
 import { readFileSync, existsSync } from 'fs';
 
 interface PackageJson {
+    version: string
     scripts: Record<string, string>;
 }
 
-function readPackageJson(): PackageJson | null{
-    const fileName = join(cwd(), 'package.json');
+export function readPackageJson(basePath = cwd()): PackageJson | null{
+    const fileName = join(basePath, 'package.json');
     
     if (existsSync(fileName)) {
         return JSON.parse(readFileSync(fileName, 'utf-8'));
