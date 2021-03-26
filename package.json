@@ -12,10 +12,6 @@
     "lint": "eslint . --ext .ts",
     "test": "jest"
   },
-  "files": [
-    "build",
-    "bin"
-  ],
   "keywords": [],
   "author": "",
   "license": "ISC",
