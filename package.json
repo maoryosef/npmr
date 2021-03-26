@@ -1,6 +1,6 @@
 {
   "name": "@maory/npmr",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "",
   "main": "build/cli.js",
   "bin": "bin/npmr.js",
