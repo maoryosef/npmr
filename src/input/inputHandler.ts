@@ -17,7 +17,7 @@ export interface InputEvents {
 }
 
 export default class InputHandler extends TypedEmitter<InputEvents> {
-  private _value: Array<any>;
+  private _value: Array<string | Buffer>;
   private _stdin: ReadStream;
   cursorPos: number;
 
