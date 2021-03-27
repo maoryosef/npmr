@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    name: Build
+    name: Build & Test
     runs-on: ubuntu-latest
 
     strategy:
@@ -24,21 +24,6 @@ jobs:
     - run: npm install
     - run: npm run lint
     - run: npm run build
-  test:
-    name: Test
-    runs-on: ubuntu-latest
-    needs: build
-    
-    strategy:
-      matrix:
-        node-version: [14.x]
-
-    steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
     - run: npm run test
   publish-test:
     name: Publish test
@@ -56,6 +41,8 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
+    - run: npm install
+    - run: npm run build
     - run: npm publish --dry-run
   publish:
     name: Publish
@@ -73,4 +60,6 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
+    - run: npm install
+    - run: npm run build
     - run: npm publish
