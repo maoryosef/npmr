@@ -1,6 +1,6 @@
 # NPMR
-![](https://github.com/maoryosef/npmr/actions/workflows/pr-test.yml/badge.svg?branch=master)
-![](https://img.shields.io/npm/v/@maory/npmr)
+[![Build Status](https://github.com/maoryosef/npmr/actions/workflows/pr-test.yml/badge.svg?branch=master)](https://github.com/maoryosef/npmr/actions/workflows/pr-test.yml)
+[![Package status](https://img.shields.io/npm/v/@maory/npmr)](https://www.npmjs.com/package/@maory/npmr)
 
 List search and execute the available scripts in your project
 
