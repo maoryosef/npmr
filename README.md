@@ -15,10 +15,10 @@ npmr
 ```
 Run it in the top level of your project
 
-![List scripts](./docs/screenshot1.png)
+![List scripts](https://github.com/maoryosef/npmr/blob/master/docs/screenshot1.png?raw=true)
 
 start typing to do a fuzzy find on your scripts
 
-![Search scripts](./docs/screenshot2.png)
+![Search scripts](https://github.com/maoryosef/npmr/blob/master/docs/screenshot2.png?raw=true)
 
 Press `enter` to execute the script

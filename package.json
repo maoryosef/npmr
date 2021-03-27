@@ -17,8 +17,13 @@
     "bin",
     "build"
   ],
-  "keywords": [],
-  "author": "",
+  "keywords": ["node", "npm", "scripts"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/maoryosef/npmr.git"
+  },
+  "homepage": "https://github.com/maoryosef/npmr#readme",
+  "author": "Maor Yosef",
   "license": "ISC",
   "devDependencies": {
     "@types/command-line-args": "^5.0.0",
