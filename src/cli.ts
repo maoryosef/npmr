@@ -17,6 +17,6 @@ try {
     } else {
         npmr()
     }
-} catch (e: Error) {
+} catch (e: any) {//TODO: Fix this any 
     console.log(e.message)
 }
