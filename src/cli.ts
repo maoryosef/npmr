@@ -17,6 +17,6 @@ try {
     } else {
         npmr()
     }
-} catch (e) {
+} catch (e: Error) {
     console.log(e.message)
 }
